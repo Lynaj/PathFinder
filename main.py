@@ -1,40 +1,47 @@
-def get_path_child(child_elements, end_node, start_node, graph, currentElement):
- 
 
+def get_path_child(child_elements, end_node, start_node, graph, currentElement, alreadyVisited):
+ 
     resultArr = []
     
     for el in child_elements:
         if el != start_node:
-            if el != end_node:
+            if el not in alreadyVisited:
+                
+                alreadyVisited.append(
+                    el
+                )
 
-                result = get_path_child(
-                    graph[el],
-                    end_node,
-                    start_node,
-                    graph,
-                    currentElement
-                ) 
-                if (
-                    result != 0
-                ):
-                    
-                    resultArr += result
-                    resultArr += el
-                    
-                    return resultArr
-                    
+                if el != end_node:
 
+                    result = get_path_child(
+                        graph[el],
+                        end_node,
+                        start_node,
+                        graph,
+                        currentElement,
+                        alreadyVisited
+                    ) 
+                    if (
+                        result != None
+                    ):
+                        
+                        resultArr += result
+                        resultArr += el
+                        
+                        return resultArr
+                else:
+                    return currentElement
             else:
-
-                return currentElement
+                print("el not in alreadyVisited" + str(el not in alreadyVisited))
     
+    if(len(resultArr) > 0):
+        return resultArr
     
-    return resultArr
-    
-def get_paths(graph, start_node, end_node):
+def get_paths(graph, start_node, end_node,):
     
     generalPath = []
-    
+    alreadyVisited = []
+
     if start_node and end_node in graph:
         
         for el in graph[start_node]:
@@ -44,9 +51,12 @@ def get_paths(graph, start_node, end_node):
                     end_node,
                     start_node,
                     graph,
-                    el
+                    el,
+                    alreadyVisited
                 )
             )
+
+    return generalPath
     
 
 
@@ -62,5 +72,3 @@ if __name__ == "__main__":
     }
     
     print(get_paths(graph, 'A', 'F'))
-    
-    # [['A', 'C', 'F'],[...]]
