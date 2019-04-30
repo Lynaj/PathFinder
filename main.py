@@ -9,49 +9,22 @@ def get_path_child(
     start_node,
     graph, 
     currentElement, 
-    alreadyVisited
+    alreadyVisited,
+    rootNode=False
 ):
     global generalPath
  
     resultArr = []
-    print('child_elements : ' + str(child_elements))
+    index = 0
     for el in child_elements:
-        print('****************************')
-        print('****************************')
-        print('****************************')
-        print('****************************')
-        # pdb.set_trace()
-        print("EL: " + str(el))
+        index = index + 1
         currentElement = el
         if el != start_node:
             if el not in alreadyVisited:
-                
-                # pdb.set_trace()
-
-                alreadyVisited.append(
-                    el
-                )
-
-                print('alreadyVisited: ' + 
-                    str(
-                        alreadyVisited
-                    )
-                )
                 if el != end_node:
 
-                    print(
-                        'el: '
-                        +
-                        str(el)
-                        +
-                        ' currentElement: '
-                        + str(currentElement)
-                        +
-                        ' przerabiam: ' 
-                        +
-                        str(
-                            graph[el]
-                        )
+                    alreadyVisited.append(
+                        el
                     )
 
                     przefiltrowana = list(
@@ -62,8 +35,6 @@ def get_path_child(
                             graph[el]
                         )
                     )
-
-                    print('przefiltrowana: ' + str(przefiltrowana))
 
                     if(
                         len(
@@ -87,17 +58,16 @@ def get_path_child(
                             
                             resultArr += result
                             resultArr += el
-                            
-                            return resultArr
-                    # else:
-                        # return False
+
+                            if (rootNode):
+                                generalPath.append(resultArr)
+                                resultArr = []
+
+                            if((index) == len(child_elements)):
+                                return resultArr
 
                 else:
                     return currentElement
-            # else:
-                # print("el not in alreadyVisited" + str(el not in alreadyVisited))
-        
-# if(len(resultArr) > 0):
     generalPath.append(resultArr)
     
 def get_paths(graph, start_node, end_node,):
@@ -106,25 +76,16 @@ def get_paths(graph, start_node, end_node,):
     alreadyVisited = []
 
     if start_node and end_node in graph:
-        
-        # for el in graph[start_node]:
 
-            # alreadyVisited.append(el)
-
-            # pdb.set_trace()
         returnedList = get_path_child(
             graph[start_node],
             end_node,
             start_node,
             graph,
             start_node,
-            alreadyVisited
+            alreadyVisited,
+            True
         )
-
-        if(len(returnedList) > 0):
-            generalPath.append(
-                returnedList    
-            )
 
     return generalPath
 
